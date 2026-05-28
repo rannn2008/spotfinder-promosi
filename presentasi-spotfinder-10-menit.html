@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentasi SpotFinder 10 Menit</title>
+    <style>
+        :root {
+            --bg: #071016;
+            --panel: rgba(255, 255, 255, 0.07);
+            --panel-strong: rgba(255, 255, 255, 0.12);
+            --line: rgba(255, 255, 255, 0.16);
+            --text: #eef7f4;
+            --muted: #a8b9c2;
+            --cyan: #35d0ff;
+            --green: #77e08f;
+            --yellow: #f7c948;
+            --red: #ff7a7a;
+            --ink: #071016;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            background: #020507;
+            color: var(--text);
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            display: grid;
+            place-items: center;
+            padding: 18px;
+            overflow: hidden;
+        }
+
+        .deck {
+            width: min(100vw - 36px, 1280px);
+            aspect-ratio: 16 / 9;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background:
+                radial-gradient(circle at 12% 12%, rgba(53, 208, 255, 0.22), transparent 32%),
+                radial-gradient(circle at 86% 72%, rgba(119, 224, 143, 0.16), transparent 30%),
+                linear-gradient(135deg, #08141d 0%, #0b1418 44%, #061012 100%);
+            box-shadow: 0 24px 90px rgba(0, 0, 0, 0.48);
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: none;
+            padding: 58px 68px 72px;
+        }
+
+        .slide.active {
+            display: grid;
+        }
+
+        .slide::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 46px 46px;
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 76%);
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-row img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            box-shadow: 0 0 24px rgba(53, 208, 255, 0.28);
+        }
+
+        .kicker {
+            color: var(--green);
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin: 0;
+        }
+
+        h1 {
+            max-width: 880px;
+            font-size: 76px;
+            line-height: 0.95;
+            letter-spacing: 0;
+        }
+
+        h2 {
+            max-width: 860px;
+            font-size: 48px;
+            line-height: 1.04;
+            letter-spacing: 0;
+        }
+
+        h3 {
+            font-size: 23px;
+            line-height: 1.18;
+        }
+
+        p,
+        li {
+            font-size: 20px;
+            line-height: 1.45;
+            color: var(--muted);
+        }
+
+        strong {
+            color: var(--text);
+        }
+
+        .cover {
+            grid-template-columns: 1fr 440px;
+            gap: 52px;
+            align-items: center;
+        }
+
+        .cover-copy {
+            display: grid;
+            gap: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-copy .subtitle {
+            max-width: 720px;
+            font-size: 25px;
+            color: #d2e4e8;
+        }
+
+        .byline {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 14px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            min-height: 34px;
+            padding: 8px 14px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #d8edf1;
+            font-size: 14px;
+            font-weight: 750;
+        }
+
+        .hero-visual {
+            position: relative;
+            z-index: 1;
+            min-height: 520px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #0a161d;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+        }
+
+        .hero-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .two-col {
+            grid-template-columns: 0.96fr 1.04fr;
+            gap: 44px;
+            align-items: center;
+        }
+
+        .stack {
+            display: grid;
+            gap: 22px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel);
+            padding: 24px;
+            backdrop-filter: blur(8px);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .metric {
+            min-height: 132px;
+            display: grid;
+            align-content: center;
+            gap: 8px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 18px;
+        }
+
+        .metric b {
+            font-size: 34px;
+            line-height: 1;
+            color: var(--cyan);
+        }
+
+        .metric span {
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.35;
+        }
+
+        .feature-card {
+            min-height: 162px;
+            display: grid;
+            align-content: start;
+            gap: 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 22px;
+            background: var(--panel);
+        }
+
+        .feature-card .tag {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan), var(--green));
+            color: var(--ink);
+            font-weight: 900;
+        }
+
+        .feature-card p {
+            font-size: 16px;
+        }
+
+        .flow {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .flow-step {
+            min-height: 200px;
+            display: grid;
+            gap: 12px;
+            align-content: start;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .flow-step b {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--cyan);
+            color: var(--ink);
+        }
+
+        .flow-step p {
+            font-size: 16px;
+        }
+
+        .screen-frame {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #0d161c;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
+        }
+
+        .screen-frame img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .screens {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            align-items: end;
+        }
+
+        .phone-shot {
+            display: grid;
+            gap: 10px;
+        }
+
+        .phone-shot .screen-frame {
+            height: 430px;
+        }
+
+        .phone-shot h3 {
+            font-size: 18px;
+        }
+
+        .hardware-map {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .hardware-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel);
+            padding: 18px;
+        }
+
+        .hardware-item b {
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            background: rgba(53, 208, 255, 0.16);
+            color: var(--cyan);
+            font-size: 18px;
+        }
+
+        .hardware-item p {
+            margin-top: 4px;
+            font-size: 16px;
+        }
+
+        .demo-script {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .demo-script ol {
+            margin: 0;
+            padding-left: 25px;
+        }
+
+        .demo-script li {
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+
+        .closing {
+            place-items: center;
+            text-align: center;
+        }
+
+        .closing .stack {
+            max-width: 900px;
+            justify-items: center;
+        }
+
+        .footer {
+            position: absolute;
+            left: 68px;
+            right: 68px;
+            bottom: 28px;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: rgba(238, 247, 244, 0.7);
+            font-size: 13px;
+        }
+
+        .notes {
+            display: none;
+            position: absolute;
+            left: 68px;
+            right: 68px;
+            bottom: 52px;
+            z-index: 4;
+            border: 1px solid rgba(247, 201, 72, 0.38);
+            border-radius: 8px;
+            background: rgba(5, 11, 14, 0.88);
+            padding: 14px 18px;
+            color: #f7e7ae;
+            font-size: 14px;
+            line-height: 1.42;
+        }
+
+        .show-notes .slide.active .notes {
+            display: block;
+        }
+
+        .controls {
+            position: fixed;
+            left: 50%;
+            bottom: 18px;
+            z-index: 20;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.62);
+            backdrop-filter: blur(10px);
+        }
+
+        button {
+            min-width: 42px;
+            min-height: 38px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, var(--cyan), var(--green));
+            color: var(--ink);
+        }
+
+        .counter {
+            min-width: 72px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                overflow: auto;
+                place-items: start center;
+            }
+
+            .deck {
+                width: 100%;
+                height: auto;
+                aspect-ratio: auto;
+            }
+
+            .slide,
+            .slide.active {
+                position: relative;
+                min-height: auto;
+                padding: 34px 22px 86px;
+                display: grid;
+            }
+
+            .slide:not(.active) {
+                display: none;
+            }
+
+            .cover,
+            .two-col,
+            .grid-2,
+            .grid-3,
+            .flow,
+            .screens,
+            .hardware-map,
+            .demo-script {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 46px;
+            }
+
+            h2 {
+                font-size: 34px;
+            }
+
+            .hero-visual,
+            .phone-shot .screen-frame {
+                min-height: 0;
+                height: auto;
+            }
+
+            .footer,
+            .notes {
+                left: 22px;
+                right: 22px;
+            }
+        }
+
+        @media print {
+            body {
+                display: block;
+                padding: 0;
+                overflow: visible;
+                background: #fff;
+            }
+
+            .deck {
+                width: 100%;
+                aspect-ratio: auto;
+                border: 0;
+                box-shadow: none;
+            }
+
+            .slide {
+                position: relative;
+                display: grid !important;
+                width: 100%;
+                height: 100vh;
+                page-break-after: always;
+            }
+
+            .controls,
+            .notes {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="deck" id="deck">
+        <section class="slide active cover">
+            <div class="cover-copy">
+                <div class="brand-row">
+                    <img src="assets/img/favicon.png" alt="">
+                    <span>SpotFinder</span>
+                </div>
+                <div class="kicker">Project Presentation</div>
+                <h1>Sistem Parkir Cerdas Berbasis IoT dan Web</h1>
+                <p class="subtitle">Solusi untuk membantu pengguna mencari slot parkir, masuk dengan RFID, memantau status secara real-time, dan mengelola pembayaran secara digital.</p>
+                <div class="byline">
+                    <span class="pill">By: Zahran Al Syafit</span>
+                    <span class="pill">Durasi: 10 menit</span>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <img src="assets/img/hero.png" alt="Visual utama SpotFinder">
+            </div>
+            <div class="notes">Pembuka 45 detik: perkenalkan nama proyek, nama pembuat, dan gambaran singkat bahwa SpotFinder menggabungkan aplikasi web, database, dan perangkat IoT untuk mengatur parkir.</div>
+            <div class="footer"><span>01 - Cover</span><span>0:45</span></div>
+        </section>
+
+        <section class="slide two-col">
+            <div class="stack">
+                <div class="kicker">Latar Belakang</div>
+                <h2>Masalah parkir sering terlihat kecil, tetapi dampaknya besar.</h2>
+                <p>Di area ramai, pengguna sering menghabiskan waktu untuk mencari slot kosong. Pengelola juga sulit mengetahui kapasitas, riwayat kendaraan, dan pemasukan secara cepat.</p>
+            </div>
+            <div class="grid-2">
+                <div class="metric"><b>Waktu</b><span>Pengguna berputar mencari tempat kosong.</span></div>
+                <div class="metric"><b>Data</b><span>Riwayat parkir dan transaksi sering tidak terpusat.</span></div>
+                <div class="metric"><b>Akses</b><span>Palang masuk masih banyak yang manual.</span></div>
+                <div class="metric"><b>Laporan</b><span>Pengelola butuh rekap yang cepat dan rapi.</span></div>
+            </div>
+            <div class="notes">Durasi 1 menit: jelaskan masalah nyata. Tekankan bahwa proyek ini dibuat karena parkir manual kurang efisien untuk pengguna dan kurang informatif untuk admin.</div>
+            <div class="footer"><span>02 - Masalah</span><span>1:00</span></div>
+        </section>
+
+        <section class="slide two-col">
+            <div class="stack">
+                <div class="kicker">Tujuan Proyek</div>
+                <h2>Membuat parkir lebih cepat, tertata, dan mudah dipantau.</h2>
+                <p>SpotFinder dibuat sebagai prototype smart parking yang menyatukan deteksi slot, autentikasi pengguna, dashboard, wallet, booking, dan laporan.</p>
+            </div>
+            <div class="grid-2">
+                <div class="feature-card"><span class="tag">1</span><h3>Real-time Slot</h3><p>Status slot kosong, terisi, booking, atau pelanggaran dapat terlihat langsung.</p></div>
+                <div class="feature-card"><span class="tag">2</span><h3>RFID Access</h3><p>Kendaraan masuk melalui verifikasi kartu RFID dan data member.</p></div>
+                <div class="feature-card"><span class="tag">3</span><h3>Cashless Wallet</h3><p>Saldo, top-up, biaya parkir, dan booking fee dikelola dari aplikasi.</p></div>
+                <div class="feature-card"><span class="tag">4</span><h3>Dashboard Admin</h3><p>Admin dapat melihat pengguna, transaksi, analytics, chat, dan gate control.</p></div>
+            </div>
+            <div class="notes">Durasi 1 menit: bagian ini menjawab kenapa dibuat dan apa targetnya. Gunakan kata sederhana: pengguna lebih cepat, admin lebih mudah mengelola.</div>
+            <div class="footer"><span>03 - Tujuan</span><span>1:00</span></div>
+        </section>
+
+        <section class="slide">
+            <div class="stack">
+                <div class="kicker">Fitur Utama</div>
+                <h2>Satu sistem untuk pengguna, admin, dan perangkat parkir.</h2>
+                <div class="grid-3">
+                    <div class="feature-card"><span class="tag">A</span><h3>Client Portal</h3><p>Login, registrasi, profil, avatar, saldo, riwayat, dan chat support.</p></div>
+                    <div class="feature-card"><span class="tag">B</span><h3>Booking Slot</h3><p>Pengguna bisa memesan slot tersedia dengan biaya booking digital.</p></div>
+                    <div class="feature-card"><span class="tag">C</span><h3>Admin Panel</h3><p>Kelola RFID, member, top-up, tarif, analytics, history, dan laporan.</p></div>
+                    <div class="feature-card"><span class="tag">D</span><h3>IoT Detection</h3><p>ESP32 membaca sensor ultrasonik untuk mendeteksi kendaraan per slot.</p></div>
+                    <div class="feature-card"><span class="tag">E</span><h3>Auto Gate</h3><p>Servo membuka dan menutup palang setelah akses disetujui.</p></div>
+                    <div class="feature-card"><span class="tag">F</span><h3>AI Voice</h3><p>Asisten suara memberi notifikasi selamat datang, keluar, dan status sistem.</p></div>
+                </div>
+            </div>
+            <div class="notes">Durasi 1 menit: sebutkan fitur dengan cepat. Jangan terlalu teknis dulu, cukup jelaskan manfaat masing-masing fitur.</div>
+            <div class="footer"><span>04 - Fitur</span><span>1:00</span></div>
+        </section>
+
+        <section class="slide">
+            <div class="stack">
+                <div class="kicker">Cara Kerja</div>
+                <h2>Alur sistem dari pengguna datang sampai keluar parkir.</h2>
+                <div class="flow">
+                    <div class="flow-step"><b>1</b><h3>Login atau Daftar</h3><p>Pengguna masuk ke portal client dan mendaftarkan data kendaraan.</p></div>
+                    <div class="flow-step"><b>2</b><h3>Cek Slot</h3><p>Dashboard menampilkan slot kosong dan rekomendasi slot terbaik.</p></div>
+                    <div class="flow-step"><b>3</b><h3>Scan RFID</h3><p>ESP32 mengirim UID ke server untuk verifikasi akses.</p></div>
+                    <div class="flow-step"><b>4</b><h3>Sensor Membaca</h3><p>Ultrasonik mendeteksi kendaraan dan memperbarui status slot.</p></div>
+                    <div class="flow-step"><b>5</b><h3>Bayar & Keluar</h3><p>Biaya dihitung otomatis, riwayat tersimpan, dan struk bisa dicetak.</p></div>
+                </div>
+            </div>
+            <div class="notes">Durasi 1 menit: jelaskan alur seperti simulasi. Ini bagian penting untuk membuat audiens paham cara penggunaan secara ringkas.</div>
+            <div class="footer"><span>05 - Alur</span><span>1:00</span></div>
+        </section>
+
+        <section class="slide">
+            <div class="stack">
+                <div class="kicker">Tampilan Aplikasi</div>
+                <h2>Antarmuka dibuat agar status parkir mudah dibaca.</h2>
+                <div class="screens">
+                    <div class="phone-shot">
+                        <div class="screen-frame"><img src="assets/img/screen-1.png" alt="Smart dashboard SpotFinder"></div>
+                        <h3>Smart Dashboard</h3>
+                        <p>Melihat slot, okupansi, aktivitas, dan statistik.</p>
+                    </div>
+                    <div class="phone-shot">
+                        <div class="screen-frame"><img src="assets/img/screen-2.png" alt="Client portal SpotFinder"></div>
+                        <h3>Client Portal</h3>
+                        <p>Mengelola saldo, booking, riwayat, dan profil.</p>
+                    </div>
+                    <div class="phone-shot">
+                        <div class="screen-frame"><img src="assets/img/screen-3.png" alt="AI support chat SpotFinder"></div>
+                        <h3>AI Support Chat</h3>
+                        <p>Komunikasi dan bantuan antara client dengan admin.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="notes">Durasi 1 menit: tunjukkan tampilan. Jelaskan warna status: tersedia, terisi, booking, dan pelanggaran. Tekankan UI real-time.</div>
+            <div class="footer"><span>06 - UI</span><span>1:00</span></div>
+        </section>
+
+        <section class="slide two-col">
+            <div class="stack">
+                <div class="kicker">Teknologi</div>
+                <h2>Komponen web dan hardware saling terhubung melalui API.</h2>
+                <p>Backend memakai PHP dan MySQL. Frontend memakai HTML, CSS, JavaScript, jQuery, dan Chart.js. Perangkat memakai ESP32, RFID RC522, sensor ultrasonik, OLED, LED, buzzer, dan servo palang.</p>
+            </div>
+            <div class="hardware-map">
+                <div class="hardware-item"><b>PHP</b><div><h3>Server App</h3><p>Login, dashboard, transaksi, settings, report, dan API.</p></div></div>
+                <div class="hardware-item"><b>SQL</b><div><h3>Database</h3><p>Menyimpan users, sensor_status, parking_history, settings, dan topup_requests.</p></div></div>
+                <div class="hardware-item"><b>IoT</b><div><h3>ESP32</h3><p>Mengirim status sensor dan menerima perintah gate dari server.</p></div></div>
+                <div class="hardware-item"><b>RFID</b><div><h3>Akses Masuk</h3><p>Kartu member dipakai untuk validasi kendaraan sebelum palang terbuka.</p></div></div>
+                <div class="hardware-item"><b>API</b><div><h3>Integrasi</h3><p>Endpoint seperti check access, update sensor, auto exit, booking, dan chat.</p></div></div>
+                <div class="hardware-item"><b>AI</b><div><h3>Voice Assistant</h3><p>ElevenLabs TTS dan fallback browser voice untuk notifikasi suara.</p></div></div>
+            </div>
+            <div class="notes">Durasi 1 menit: sebutkan teknologi secukupnya. Jangan baca semua detail, cukup tunjukkan bahwa proyek ini full-stack dan terhubung ke hardware.</div>
+            <div class="footer"><span>07 - Teknologi</span><span>1:00</span></div>
+        </section>
+
+        <section class="slide">
+            <div class="stack">
+                <div class="kicker">Cara Penggunaan Saat Demo</div>
+                <h2>Urutan demo yang aman untuk presentasi 10 menit.</h2>
+                <div class="demo-script">
+                    <div class="panel">
+                        <h3>Untuk Client</h3>
+                        <ol>
+                            <li>Buka halaman promosi SpotFinder, lalu klik Client Portal.</li>
+                            <li>Login atau registrasi pengguna dengan data kendaraan.</li>
+                            <li>Lihat saldo, status slot, rekomendasi slot, dan riwayat.</li>
+                            <li>Coba booking slot kosong, lalu cek perubahan status.</li>
+                            <li>Buka chat support jika ingin bantuan atau batal booking.</li>
+                        </ol>
+                    </div>
+                    <div class="panel">
+                        <h3>Untuk Admin</h3>
+                        <ol>
+                            <li>Login admin dan buka dashboard utama.</li>
+                            <li>Perlihatkan slot real-time, activity feed, dan okupansi.</li>
+                            <li>Buka Users & Wallet untuk approve top-up atau tambah RFID.</li>
+                            <li>Tunjukkan analytics, settings tarif, dan riwayat transaksi.</li>
+                            <li>Gunakan gate control untuk membuka atau menutup palang.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="notes">Durasi 1 menit 15 detik: ini adalah script demo. Kalau waktu mepet, cukup jalankan 3 hal: cek slot, booking client, lalu dashboard admin.</div>
+            <div class="footer"><span>08 - Demo</span><span>1:15</span></div>
+        </section>
+
+        <section class="slide two-col">
+            <div class="stack">
+                <div class="kicker">Kelebihan dan Manfaat</div>
+                <h2>SpotFinder memberi nilai untuk pengguna dan pengelola.</h2>
+                <p>Pengguna mendapat pengalaman parkir yang lebih cepat dan jelas. Admin mendapat data operasional, transaksi, dan kontrol perangkat dalam satu tempat.</p>
+            </div>
+            <div class="grid-2">
+                <div class="feature-card"><span class="tag">+</span><h3>Efisien</h3><p>Mengurangi waktu mencari parkir karena slot terlihat dari dashboard.</p></div>
+                <div class="feature-card"><span class="tag">+</span><h3>Terdokumentasi</h3><p>Masuk, keluar, booking, top-up, dan biaya tercatat otomatis.</p></div>
+                <div class="feature-card"><span class="tag">+</span><h3>Modern</h3><p>Ada wallet, chat, voice notification, dan analytics.</p></div>
+                <div class="feature-card"><span class="tag">+</span><h3>Dapat Dikembangkan</h3><p>Bisa ditambah banyak slot, kamera plat nomor, QRIS asli, dan deployment online.</p></div>
+            </div>
+            <div class="notes">Durasi 1 menit: tekankan hasil akhirnya. Bagian pengembangan boleh disebut sebagai rencana masa depan, bukan klaim fitur yang sudah final.</div>
+            <div class="footer"><span>09 - Manfaat</span><span>1:00</span></div>
+        </section>
+
+        <section class="slide closing">
+            <div class="stack">
+                <div class="brand-row">
+                    <img src="assets/img/favicon.png" alt="">
+                    <span>SpotFinder</span>
+                </div>
+                <div class="kicker">Penutup</div>
+                <h1>Parkir lebih pintar, data lebih rapi, pengalaman lebih cepat.</h1>
+                <p>SpotFinder membuktikan bahwa masalah parkir bisa diselesaikan dengan kombinasi web app, database, IoT, dan desain penggunaan yang jelas.</p>
+                <span class="pill">Terima kasih</span>
+            </div>
+            <div class="notes">Durasi 1 menit: tutup dengan kesimpulan singkat. Setelah itu buka sesi tanya jawab atau langsung demo aplikasi jika diminta.</div>
+            <div class="footer"><span>10 - Closing</span><span>1:00</span></div>
+        </section>
+    </main>
+
+    <nav class="controls" aria-label="Kontrol presentasi">
+        <button type="button" id="prevBtn" aria-label="Slide sebelumnya">&lt;</button>
+        <span class="counter"><span id="slideNow">1</span> / <span id="slideTotal">10</span></span>
+        <button type="button" id="nextBtn" aria-label="Slide berikutnya">&gt;</button>
+        <button type="button" id="notesBtn" aria-label="Tampilkan catatan">Notes</button>
+        <button type="button" id="printBtn" aria-label="Print atau export PDF">PDF</button>
+    </nav>
+
+    <script>
+        const deck = document.getElementById("deck");
+        const slides = Array.from(document.querySelectorAll(".slide"));
+        const slideNow = document.getElementById("slideNow");
+        const slideTotal = document.getElementById("slideTotal");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const notesBtn = document.getElementById("notesBtn");
+        const printBtn = document.getElementById("printBtn");
+        let current = 0;
+
+        slideTotal.textContent = slides.length;
+
+        function showSlide(index) {
+            current = Math.max(0, Math.min(index, slides.length - 1));
+            slides.forEach((slide, slideIndex) => {
+                slide.classList.toggle("active", slideIndex === current);
+            });
+            slideNow.textContent = String(current + 1);
+        }
+
+        prevBtn.addEventListener("click", () => showSlide(current - 1));
+        nextBtn.addEventListener("click", () => showSlide(current + 1));
+        notesBtn.addEventListener("click", () => document.body.classList.toggle("show-notes"));
+        printBtn.addEventListener("click", () => window.print());
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowRight" || event.key === " ") {
+                event.preventDefault();
+                showSlide(current + 1);
+            }
+            if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                showSlide(current - 1);
+            }
+            if (event.key.toLowerCase() === "n") {
+                document.body.classList.toggle("show-notes");
+            }
+        });
+    </script>
+</body>
+</html>
