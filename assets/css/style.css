@@ -825,6 +825,36 @@ noscript {
         padding: 12px;
     }
 
+    .section-video {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .section-video .section-title {
+        padding: 0 6%;
+        margin-bottom: 34px;
+    }
+
+    .video-panel {
+        width: min(100%, 430px);
+        padding: 0 6px;
+    }
+
+    .video-frame {
+        padding: 4px;
+        border-radius: 16px;
+    }
+
+    .video-frame video {
+        border-radius: 11px;
+        object-fit: contain;
+    }
+
+    .video-controls {
+        gap: 12px;
+        padding: 0 6px;
+    }
+
     .footer-links {
         display: grid;
         gap: 12px;
